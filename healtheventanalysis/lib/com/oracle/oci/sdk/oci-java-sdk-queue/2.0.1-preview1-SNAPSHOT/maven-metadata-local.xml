@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.oracle.oci.sdk</groupId>
+  <artifactId>oci-java-sdk-queue</artifactId>
+  <versioning>
+    <lastUpdated>20221017231627</lastUpdated>
+    <snapshot>
+      <localCopy>true</localCopy>
+    </snapshot>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>2.0.1-preview1-SNAPSHOT</value>
+        <updated>20221017231627</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>2.0.1-preview1-SNAPSHOT</value>
+        <updated>20221017231627</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+  <version>2.0.1-preview1-SNAPSHOT</version>
+</metadata>

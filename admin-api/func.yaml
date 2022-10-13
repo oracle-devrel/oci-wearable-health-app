@@ -1,0 +1,20 @@
+schema_version: 20180708
+name: admin-api
+version: 0.0.1
+runtime: java8
+build_image: fnproject/fn-java-fdk-build:1.0.150
+run_image: fnproject/fn-java-fdk:1.0.150
+cmd: com.oracle.cloud.wearable.admin.fn.AdminAPI::handleRequest
+memory: 128
+timeout: 100
+config:
+ oci_java_logging_lib_java_util_logging_ConsoleHandler_formatter: java.util.logging.SimpleFormatter
+ oci_java_logging_lib_java_util_logging_ConsoleHandler_level: INFO
+ oci_java_logging_lib_handlers: java.util.logging.ConsoleHandler
+ oci_java_logging_lib__level: INFO
+ oci_java_logging_lib_java_util_logging_SimpleFormatter_format: (%4$s)(%2$s)%5$s%6$s%n
+ ENV_CONTEXT_PATH: /admin-api
+ DATA_SOURCE_URL_OCID: ${DATA_SOURCE_URL_OCID_VALUE}
+ DATA_SOURCE_USER_OCID: ${DATA_SOURCE_USER_OCID_VALUE}
+ DATA_SOURCE_PASS_OCID: ${DATA_SOURCE_PASS_OCID_VALUE}
+ HMAC_KEY_SECRET_OCID: ${HMAC_KEY_SECRET_OCID_VALUE}
