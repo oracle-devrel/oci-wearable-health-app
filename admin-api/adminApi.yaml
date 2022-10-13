@@ -1,0 +1,446 @@
+openapi: 3.0.3
+info:
+  title: Wearable API
+  description: -
+    This is a sample Wearable API.
+  version: 1.0.0
+servers:
+  - url: https://${HOST_URL}/admin-api
+tags:
+  - name: user
+  - name: device
+  - name: user preference
+
+paths:
+  /login:
+    post:
+      tags:
+        - user
+      summary: login endpoint
+      description: login endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - username
+                - pass
+              type: object
+              properties:
+                username:
+                  type: string
+                pass:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+
+  /getUser:
+    get:
+      tags:
+        - user
+      summary: Get User Details
+      description: Get User Details
+      parameters:
+        - name: username
+          in: query
+          description: username of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseId:
+                    type: string
+                  response:
+                    anyOf:
+                      - $ref: '#/components/schemas/User'
+                      - $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+      security:
+        - bearerAuth: []
+
+  /addUser:
+    post:
+      tags:
+        - user
+      summary: Add User
+      description: Add User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseId:
+                    type: string
+                  response:
+                    anyOf:
+                      - $ref: '#/components/schemas/ResponseMsg'
+                      - $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+      security:
+        - bearerAuth: []
+
+  /getDevice:
+    get:
+      tags:
+        - device
+      summary: get devices for user
+      description: get devices for user
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseId:
+                    type: string
+                  response:
+                    anyOf:
+                      - $ref: '#/components/schemas/DeviceList'
+                      - $ref: '#/components/schemas/Error'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+      security:
+        - bearerAuth: []
+
+  /addDevice:
+    post:
+      tags:
+        - device
+      summary: Add Device
+      description: Add device
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                device:
+                  type: object
+                  $ref: '#/components/schemas/Device'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseId:
+                    type: string
+                  response:
+                    anyOf:
+                      - $ref: '#/components/schemas/ResponseMsg'
+                      - $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+      security:
+        - bearerAuth: []
+
+  /link:
+    post:
+      tags:
+        - device
+      summary: link Device
+      description: link device
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: serialNo
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseId:
+                    type: string
+                  response:
+                    anyOf:
+                      - $ref: '#/components/schemas/ResponseMsg'
+                      - $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+      security:
+        - bearerAuth: []
+
+  /getUserPref:
+    get:
+      tags:
+        - user preference
+      summary: get user preferences
+      description: get user preference
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseId:
+                    type: string
+                  response:
+                    type: object
+                    $ref: '#/components/schemas/UserPreference'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+      security:
+        - bearerAuth: []
+
+  /addUserPref:
+    post:
+      tags:
+        - user preference
+      summary: Add User preference
+      description: Add User preference
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userPreferences:
+                  type: object
+                  $ref: '#/components/schemas/UserPreference'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseId:
+                    type: string
+                  response:
+                    anyOf:
+                      - $ref: '#/components/schemas/ResponseMsg'
+                      - $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+      security:
+        - bearerAuth: []
+
+
+
+components:
+  schemas:
+    Device:
+      type: object
+      properties:
+        deviceSerialNumber:
+          type: string
+        deviceType:
+          type: string
+        activationDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          description: Device Status
+          enum:
+            - NEW
+            - LINKED
+            - IN-ACTIVE
+
+    User:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        mobile:
+          type: string
+          example: '12345'
+        status:
+          type: string
+          description: User Status
+
+    UserPreference:
+      type: object
+      properties:
+        alertThresholdForHearRate:
+          type: string
+        alertThresholdForBPHigh:
+          type: string
+        alertThresholdForBPLow:
+          type: string
+        alertThresholdForSPO2:
+          type: string
+        alertThresholdForTemp:
+          type: string
+        preferedAlertChannel:
+          type: string
+        emergencyEmail:
+          type: string
+        notificationFrequency:
+          type: integer
+        emergencyMobile:
+          type: string
+
+    DeviceList:
+      type: object
+      properties:
+        deviceList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+
+    ResponseMsg:
+      type: string
+
+    Error:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+        errorCode:
+          type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
