@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{include "tcp-client.fullname" .}}
+  namespace: {{.Values.namespace}}
+  labels: {{- include "tcp-client.labels" . | nindent 4}}
+spec:
+  type: {{.Values.service.type}}
+  ports:
+    - port: {{.Values.service.port}}
+      targetPort: tcp
+      protocol: TCP
+      name: tcp
+  selector: {{- include "tcp-client.selectorLabels" . | nindent 4}}

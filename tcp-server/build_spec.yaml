@@ -1,0 +1,52 @@
+version: 0.1
+component: build
+timeoutInSeconds: 6000
+runAs: root
+shell: bash
+env:
+  # these are local variables to the build config
+  variables:
+
+  # the value of a vaultVariable is the secret-id (in OCI ID format) stored in the OCI Vault service
+  # you can then access the value of that secret in your build_spec.yaml commands
+  vaultVariables:
+    AUTH_TOKEN: "ocid1.vaultsecret.oc1.iad.amaaaaaa2wppjyqapvzpcfi4sxmfu36uuqb3vv3isbqapu6xrcsveenwtgrq"
+
+  # exportedVariables are made available to use as parameters in sucessor Build Pipeline stages
+  # For this Build to run, the Build Pipeline needs to have a BUILDRUN_HASH parameter set
+  exportedVariables:
+    - BUILDRUN_HASH
+
+steps:
+  - type: Command
+    name: "Define unique image tag"
+    timeoutInSeconds: 40
+    command: |
+      export BUILDRUN_HASH=`echo ${OCI_BUILD_RUN_ID} | rev | cut -c 1-7`
+      echo "BUILDRUN_HASH: " $BUILDRUN_HASH
+
+  - type: Command
+    timeoutInSeconds: 600
+    name: "Build the app"
+    command: |
+      cd ${OCI_PRIMARY_SOURCE_DIR}/tcp-server
+      mvn clean compile jib:dockerBuild -P cloud
+
+    onFailure:
+      - type: Command
+        command: |
+          echo "Handling Failure"
+          echo "Failure successfully handled"
+        timeoutInSeconds: 40
+        runAs: root
+
+outputArtifacts:
+  - name: tcp_server_docker_image
+    type: DOCKER_IMAGE
+    # this location tag doesn't effect the tag used to deliver the container image
+    # to the Container Registry
+    location: tcp-server:${BUILDRUN_HASH}
+
+  - name: tcp_server_k8s_manifest
+    type: BINARY
+    location: ${OCI_PRIMARY_SOURCE_DIR}/tcp-server/manifest/deployment.yaml
