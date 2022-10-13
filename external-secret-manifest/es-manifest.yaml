@@ -1,0 +1,46 @@
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: oci-vault-instance-principal-ss
+  namespace: svc
+spec:
+  provider:
+    oracle:
+      vault: ${VAULT_OCID}
+      region: ${REGION_ID}
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: tcp-server-es
+  namespace: svc
+spec:
+  refreshInterval: 0.03m
+  secretStoreRef:
+    kind: SecretStore
+    name: oci-vault-instance-principal-ss
+  target:
+    name: tcp-server-secret
+    creationPolicy: Owner
+  data:
+    - secretKey: db-password
+      remoteRef:
+        key: DB_PSWD
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: notification-service-es
+  namespace: svc
+spec:
+  refreshInterval: 0.03m
+  secretStoreRef:
+    kind: SecretStore
+    name: oci-vault-instance-principal-ss
+  target:
+    name: notification-service-secret
+    creationPolicy: Owner
+  data:
+    - secretKey: db-password
+      remoteRef:
+        key: DB_PSWD
