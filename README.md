@@ -16,8 +16,14 @@ The complete use-case can be split into 3 different parts:
 
 * Batch Analytics - The data stored in the data lake bucket can be processed using OCI Big DataService, that can aggregate data over different dimensions and time durations. This aggregated data can then be rendered on dashboards for use by OEM, end-users or medical practitioners.
 
+![Logical-Block-Diagram](./images/Logical-Block-Diagram.png)
+
+![Architecture-Diagram](./images/Architecture-Diagram.png)
+
 ## Getting Started
-MISSING
+Before you deploy this demo application, make sure you have
+* A - Set up your tenancy
+* B - Set up your compartment
 
 ### Prerequisites
 MISSING
