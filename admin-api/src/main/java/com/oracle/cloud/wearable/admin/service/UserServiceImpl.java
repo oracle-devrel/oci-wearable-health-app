@@ -77,6 +77,50 @@ public class UserServiceImpl implements UserService {
 		
 		return;
 	}
+	
+	@Override
+	public void updateUserPreferences(String username, UserPreferences newUserPreferences) throws ServiceException {
+	    
+	    UserPreferences oldUserPreferences = getUserPreferences(username);
+	    
+	    if(oldUserPreferences==null)
+	        throw new ServiceException(ServiceError._503);
+	    
+	    newUserPreferences.setId(oldUserPreferences.getId());
+
+	    if(Utils.isEmptyString(newUserPreferences.getAlertThresholdForBPHigh()))
+	        newUserPreferences.setAlertThresholdForBPHigh(oldUserPreferences.getAlertThresholdForBPHigh());
+	    
+	    if(Utils.isEmptyString(newUserPreferences.getAlertThresholdForBPLow()))
+            newUserPreferences.setAlertThresholdForBPLow(oldUserPreferences.getAlertThresholdForBPLow());
+	    
+	    if(Utils.isEmptyString(newUserPreferences.getAlertThresholdForHearRate()))
+            newUserPreferences.setAlertThresholdForHearRate(oldUserPreferences.getAlertThresholdForHearRate());
+	    
+	    if(Utils.isEmptyString(newUserPreferences.getAlertThresholdForSPO2()))
+            newUserPreferences.setAlertThresholdForSPO2(oldUserPreferences.getAlertThresholdForSPO2());
+	    
+	    if(Utils.isEmptyString(newUserPreferences.getAlertThresholdForTemp()))
+            newUserPreferences.setAlertThresholdForTemp(oldUserPreferences.getAlertThresholdForTemp());
+	    
+	    if(Utils.isEmptyString(newUserPreferences.getEmergencyEmail()))
+            newUserPreferences.setEmergencyEmail(oldUserPreferences.getEmergencyEmail());
+	    
+	    if(Utils.isEmptyString(newUserPreferences.getEmergencyMobile()))
+            newUserPreferences.setEmergencyMobile(oldUserPreferences.getEmergencyMobile());
+	    
+	    if(Utils.isEmptyString(newUserPreferences.getPreferedAlertChannel()))
+            newUserPreferences.setPreferedAlertChannel(oldUserPreferences.getPreferedAlertChannel());
+	    
+	    
+	    try {
+            userPrefDao.update(newUserPreferences);
+        } catch (DaoException e) {
+            throw new ServiceException(ServiceError._504, e);
+        }
+	    
+	    
+	}
 
 	private void validatePassword(String password) throws ServiceException {
 		if (password.length() < 8)

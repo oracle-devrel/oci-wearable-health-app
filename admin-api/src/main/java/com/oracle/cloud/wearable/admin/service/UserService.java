@@ -9,6 +9,8 @@ public interface UserService {
 	
 	public void addUserPreferences(String username, UserPreferences userPreferences) throws ServiceException;
 	
+	public void updateUserPreferences(String username, UserPreferences userPreferences) throws ServiceException;
+	
 	public User findUserByUserName(String username) throws ServiceException;
 	
 	public UserPreferences getUserPreferences(String username) throws ServiceException;

@@ -73,6 +73,11 @@ public class DeviceDaoImpl extends AbstractDao<Device> {
 			objParams.add(obj.getUserId());
 		}
 		
+		if(Utils.isEmptyString(obj.getStatus())) {
+            sb.append("status=? ");
+            objParams.add(obj.getStatus());
+        }
+		
 		if(objParams.size()==0)
 			return;
 		

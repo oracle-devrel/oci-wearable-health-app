@@ -48,5 +48,6 @@ public class ServiceError {
 	
 	public static ServiceError _502 = new ServiceError(502, "Error creating user preferences", "Error creating user preferences");
 	public static ServiceError _503 = new ServiceError(503, "Error finding user preference", "Error finding user preference");
+	public static ServiceError _504 = new ServiceError(504, "Error updating user preference", "Error updating user preference");
 
 }

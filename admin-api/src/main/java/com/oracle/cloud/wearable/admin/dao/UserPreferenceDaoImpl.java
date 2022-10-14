@@ -117,12 +117,12 @@ public class UserPreferenceDaoImpl extends AbstractDao<UserPreferences> {
 			throw new DaoException("unable to convert user pref obj to string", e1);
 		}
 
-		String sql = "UPDATE user_preference SET preference=? ";
+		String sql = "UPDATE user_preference SET preference=? where id=? ";
 
 		QueryRunner run = new QueryRunner();
 
 		try {
-			run.update(getConnection(), sql, prefJson);
+			run.update(getConnection(), sql, prefJson,obj.getId());
 		} catch (SQLException e) {
 			throw new DaoException("unable to update user pref", e);
 		}

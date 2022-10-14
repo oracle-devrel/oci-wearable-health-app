@@ -26,9 +26,9 @@ import com.oracle.cloud.wearable.admin.LoginRequest;
 import com.oracle.cloud.wearable.admin.LoginResponse;
 import com.oracle.cloud.wearable.admin.Request;
 import com.oracle.cloud.wearable.admin.Response;
+import com.oracle.cloud.wearable.admin.Response.ResponseBuilder;
 import com.oracle.cloud.wearable.admin.User;
 import com.oracle.cloud.wearable.admin.UserPreferences;
-import com.oracle.cloud.wearable.admin.Response.ResponseBuilder;
 import com.oracle.cloud.wearable.admin.response.Error;
 import com.oracle.cloud.wearable.admin.service.DeviceService;
 import com.oracle.cloud.wearable.admin.service.SecurityService;
@@ -65,7 +65,7 @@ public class AdminAPI {
 	
 	private SecurityService ss = SecurityService.getInstance();
 
-	//private static final String ENDPOINT_UPDATE_USER_PREF = "POST /updateUserPref";
+	private static final String ENDPOINT_UPDATE_USER_PREF = "POST /updateUserPref";
 	//private static final String ENDPOINT_UPDATE_USER = "POST /updateUser";
 	//private static final String ENDPOINT_UPDATE_DEVICE = "POST /updateDevice";
 
@@ -130,8 +130,6 @@ public class AdminAPI {
 		createDataSource(environmentMap);
 		
 		try {
-			 //"tglKVRc9HKbGzOlUB7MbKwJmFxBlyVPLXJaC0+pLebE=";
-			
 			key = Keys.hmacShaKeyFor(ss.getSecretByOCID(environmentMap.get(HMAC_KEY_SECRET_OCID)));
 		
 		}catch (Exception e) {
@@ -217,6 +215,10 @@ public class AdminAPI {
 			case ENDPOINT_LINK_DEVICE:
 				String serialNumber = Utils.getQueryParameter(queryString, SERIAL_NUMBER);
 				return linkdevice(username,serialNumber).setResponseId(responseCode).build();
+			
+			case ENDPOINT_UPDATE_USER_PREF:
+			    UserPreferences updatedUserPreferences = Utils.parseJson(postDataInput, objectMapper, Request.class).getUserPreferences();
+			    return updateUserPref(username,updatedUserPreferences).setResponseId(responseCode).build();
 
 			default:
 				return Response.getBuilder().setResponseId(responseCode).setError(new Error(502,"No matching path")).build();
@@ -310,6 +312,24 @@ public class AdminAPI {
 		}
 		return Response.getBuilder().setResponse("User preferences added.");
 	}
+	
+	private ResponseBuilder updateUserPref(String username, UserPreferences userPreferences) {
+	        UserService userService;
+	        try {
+	            userService = ServiceFactory.getInstance().getService(UserService.class,dataSource);
+	        } catch (ServiceException e) {
+	            e.printStackTrace();
+	            return Response.getBuilder().setError(e.getError());
+	        }
+	        
+	        try {
+	            userService.updateUserPreferences(username,userPreferences);
+	        } catch (ServiceException e) {
+	            e.printStackTrace();
+	            return Response.getBuilder().setError(e.getError());
+	        }
+	        return Response.getBuilder().setResponse("User preferences updated.");
+	    }
 
 	private ResponseBuilder listUserPref(String username2) {
 		UserService userService;
@@ -413,6 +433,5 @@ public class AdminAPI {
 		}
 		
 	}
-
 
 }

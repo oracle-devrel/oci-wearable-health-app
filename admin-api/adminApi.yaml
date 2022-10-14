@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Wearable API
-  description: -
+  description: 
     This is a sample Wearable API.
   version: 1.0.0
 servers:
@@ -116,19 +116,6 @@ paths:
                     anyOf:
                       - $ref: '#/components/schemas/ResponseMsg'
                       - $ref: '#/components/schemas/Error'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                  code:
-                    type: integer
-      security:
-        - bearerAuth: []
 
   /getDevice:
     get:
@@ -352,6 +339,56 @@ paths:
                     type: integer
       security:
         - bearerAuth: []
+
+  /updateUserPref:
+    post:
+      tags:
+        - user preference
+      summary: Update User preference
+      description: Update User preference
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userPreferences:
+                  type: object
+                  $ref: '#/components/schemas/UserPreference'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseId:
+                    type: string
+                  response:
+                    anyOf:
+                      - $ref: '#/components/schemas/ResponseMsg'
+                      - $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+      security:
+        - bearerAuth: []
+
 
 
 

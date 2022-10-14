@@ -79,6 +79,7 @@ public class DeviceServiceImpl implements DeviceService {
 				throw new ServiceException(ServiceError._301);
 			
 			d.setUserId(read.getId());
+			d.setStatus("ACTIVE");
 			
 			deviceDao.update(d);
 			
