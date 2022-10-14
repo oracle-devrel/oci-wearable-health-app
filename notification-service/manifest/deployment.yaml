@@ -27,7 +27,7 @@ spec:
         - name: notification-service
           securityContext:
             {}
-          image: "iad.ocir.io/iaassiedupu/health-app-repo/notification-service:${BUILDRUN_HASH}"
+          image: "${NOTIFICATION_IMAGE_REPO_URL}:${BUILDRUN_HASH}"
           imagePullPolicy: IfNotPresent
           env:
             - name: DB_NAME

@@ -27,7 +27,7 @@ spec:
         - name: tcp-server
           securityContext:
             {}
-          image: "iad.ocir.io/iaassiedupu/health-app-repo/tcp-server:${BUILDRUN_HASH}"
+          image: "${TCPSERVER_IMAGE_REPO_URL}:${BUILDRUN_HASH}"
           imagePullPolicy: IfNotPresent
           env:
             - name: DB_NAME
