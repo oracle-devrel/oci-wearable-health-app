@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.example</groupId>
+	<artifactId>healtheventanalysis</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<properties>
+		<spark.version>3.0.2</spark.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<oci-java-sdk-version>2.28.0</oci-java-sdk-version>
+		<bouncycastle-version>1.0.2</bouncycastle-version>
+		<jackson-bom.version>2.10.5.1</jackson-bom.version>
+		<cloud.events.api.version>2.3.0</cloud.events.api.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.oracle.oci.sdk</groupId>
+			<artifactId>oci-java-sdk-addons-sasl</artifactId>
+			<optional>false</optional>
+			<version>1.36.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>3.16.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-core_2.12</artifactId>
+			<version>${spark.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-sql_2.12</artifactId>
+			<version>${spark.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming_2.12</artifactId>
+			<version>${spark.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-sql-kafka-0-10_2.12</artifactId>
+			<version>${spark.version}</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>io.cloudevents</groupId> <artifactId>cloudevents-api</artifactId> 
+			<version>1.2.0</version> <exclusions> <exclusion> <groupId>org.hibernate.validator</groupId> 
+			<artifactId>hibernate-validator</artifactId> </exclusion> </exclusions> </dependency> -->
+		<dependency>
+			<groupId>io.cloudevents</groupId>
+			<artifactId>cloudevents-core</artifactId>
+			<version>${cloud.events.api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cloudevents</groupId>
+			<artifactId>cloudevents-json-jackson</artifactId>
+			<version>${cloud.events.api.version}</version>
+		</dependency>
+
+
+
+
+		<dependency>
+			<groupId>com.oracle.nosql.sdk</groupId>
+			<artifactId>nosqldriver</artifactId>
+			<version>5.3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20211205</version>
+
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.oci.sdk</groupId>
+			<artifactId>oci-java-sdk-common</artifactId>
+			<version>${oci-java-sdk-version}</version>
+			<optional>false</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.oci.sdk</groupId>
+			<artifactId>oci-hdfs</artifactId>
+			<version>3.3.1.0.3.4</version>
+			<type>pom</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.oci.sdk</groupId>
+			<artifactId>oci-java-sdk-queue</artifactId>
+			<version>2.0.1-preview1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/oci-java-sdk-queue-2.0.1-preview1-SNAPSHOT.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.20</version>
+
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.oci.sdk</groupId>
+			<artifactId>oci-hdfs-connector</artifactId>
+			<version>3.3.1.0.0.0</version>
+			<!-- <scope>provided</scope> -->
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/oci-hdfs-connector-3.3.1.0.0.0.jar</systemPath>
+
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-util-ajax</artifactId>
+
+
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Gson dependency -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.6</version>
+		</dependency>
+		<!-- <dependency> <groupId>org.glassfish</groupId> <artifactId>javax.el</artifactId> 
+			<version>3.0.1-b09</version> </dependency> <dependency> <groupId>log4j</groupId> 
+			<artifactId>log4j</artifactId> <version>1.2.17</version> </dependency> <dependency> 
+			<groupId>org.apache.commons</groupId> <artifactId>commons-lang3</artifactId> 
+			<version>3.12.0</version> </dependency> <dependency> <groupId>commons-io</groupId> 
+			<artifactId>commons-io</artifactId> <version>2.11.0</version> </dependency> 
+			<dependency> <groupId>bcpkix-fips</groupId> <artifactId>bcpkix-fips</artifactId> 
+			<version>${bouncycastle-version}</version> </dependency> -->
+
+
+
+
+
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>jakarta.el</artifactId>
+			<version>4.0.1</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<skipAssembly>false</skipAssembly>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<configuration>
+					<!-- The final uber jar file name will not have a version component. -->
+					<finalName>${project.artifactId}</finalName>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+					<transformers>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
+					</transformers>
+					<relocations>
+						<relocation>
+							<pattern>com.google.</pattern>
+							<shadedPattern>com.shaded.google.</shadedPattern>
+						</relocation>
+						<relocation>
+							<pattern>com.oracle.bmc.</pattern>
+							<shadedPattern>com.shaded.oracle.bmc.</shadedPattern>
+						</relocation>
+					</relocations>
+					<!-- exclude signed Manifests -->
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+							</excludes>
+						</filter>
+					</filters>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson-bom.version}</version>
+
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+</project>
