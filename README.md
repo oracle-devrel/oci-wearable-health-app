@@ -44,7 +44,7 @@ Oracle automates tasks such as backup and recovery, and database and operating s
 
 We use Mysql to store the Users, User Preferences and Device data.
 
-### OCI K8 cluster
+### OKE
 
 Oracle Cloud Infrastructure [Container Engine](https://docs.oracle.com/en-us/iaas/Content/ContEng/Concepts/contengoverview.htm) for Kubernetes is a fully-managed, scalable, and highly available service that you can use to deploy your containerized applications to the cloud.
 
@@ -74,6 +74,38 @@ A [NoSQL database](https://docs.oracle.com/en-us/iaas/nosql-database/index.html)
 
 In our demo application we use the NoSqlDB to store the raw events which are received by the IOT gateway application. NoSql provides us with the flexibility to store raw events which can be of different schema types.
 
+### SCH
+
+Service Connector Hub [Service Connector Hub](https://docs.oracle.com/en-us/iaas/Content/service-connector-hub/overview.htm) is a cloud message bus platform that offers a single pane of glass for describing, executing, and monitoring movement of data between services in Oracle Cloud Infrastructure.
+
+The application uses SCH to move events coming on the Stream to the Object Storage, where those are persisted for long term duration.
+
+### Network Load Balancer (NLB)
+
+The Device Gateway (TCP Server) is front-ended by a [Network Load Balancer](https://docs.oracle.com/en-us/iaas/Content/NetworkLoadBalancer/overview.htm), which is responsible for distribution of traffic. The device gateway is deployed on OKE using K8s service type as Load Balancer.
+
+The deployment manifest of TCP Server component automatically spins-up a NLB, configures the backend routing policy and the network security list, using the following annotations
+
+``` Java
+    oci.oraclecloud.com/load-balancer-type: "nlb"
+    oci-network-load-balancer.oraclecloud.com/backend-policy: "FIVE_TUPLE"
+    oci-network-load-balancer.oraclecloud.com/security-list-management-mode: "All"
+```
+
+### UMA and Custom Dashboards
+
+[Unified Monitoring Agents](https://docs.oracle.com/en-us/iaas/Content/Logging/Concepts/agent_management.htm) are used To ingest events from the applications into a custom log. This agent allows you to control exactly which logs you want to collect, how to parse them, and more. 
+
+Using [Logging Query Language](https://docs.oracle.com/en-us/iaas/Content/Logging/Reference/query_language_specification.htm), the ingested logs are viewed by creating Custom Dashboards.
+
+### Developer Tools
+
+[DevOps Service](https://docs.oracle.com/en-us/iaas/Content/devops/using/getting_started.htm) in OCI is an end-to-end, continuous integration and continuous delivery (CI/CD) platform for developers. Use this service to easily build, test, and deploy software and applications on Oracle Cloud.
+
+The application is using features like Build & Deployment pipelines, Triggers, Artifacts and Environments for implementing CI/CD process.
+
+![Custom-Dashboard](./images/Custom-Dashboard.png)
+
 ## Getting Started
 
 Before you deploy this demo application, make sure you have
@@ -82,7 +114,7 @@ Before you deploy this demo application, make sure you have
 
 * Have the permissions and quota available to manage the required resources.
 
-* Have got access to the Queue service since its still in LA.
+* Have got access to the Queue service since it's still in LA.
 
 ### Prerequisites
 
@@ -94,7 +126,7 @@ If you don't have the required permissions and quota, contact your tenancy admin
 
 ## Notes/Issues
 
-The OCI Queue service being used in the solution is currently in LA and will soon GA. Please follow the OCI News for the latest updates.
+The OCI Queue service being used in the solution is currently in LA and will soon be GA. Please follow the OCI News for the latest updates.
 One can get access to the LA feature by contacting support.
 
 ## URLs
