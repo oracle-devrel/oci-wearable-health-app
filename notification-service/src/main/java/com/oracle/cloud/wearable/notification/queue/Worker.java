@@ -146,8 +146,8 @@ public class Worker implements Runnable {
                 "Dear %s, <br/><br/> An abnormal reading was observed for your device with serial number %s, for parameter %s, <b>Defined Threshold</b> is %s, <b>Observed Value</b> is %s";
         return String.format(
                 body,
-                alert.getDeviceSerialNumber(),
                 alert.getUsername(),
+                alert.getDeviceSerialNumber(),
                 alert.getAlertingParameter(),
                 alert.getThreshold(),
                 alert.getObservedValue());
