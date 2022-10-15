@@ -76,7 +76,7 @@ In our demo application we use the NoSqlDB to store the raw events which are rec
 
 ### SCH
 
-Service Connector Hub [Service Connector Hub](https://docs.oracle.com/en-us/iaas/Content/service-connector-hub/overview.htm) is a cloud message bus platform that offers a single pane of glass for describing, executing, and monitoring movement of data between services in Oracle Cloud Infrastructure.
+[Service Connector Hub](https://docs.oracle.com/en-us/iaas/Content/service-connector-hub/overview.htm) is a cloud message bus platform that offers a single pane of glass for describing, executing, and monitoring movement of data between services in Oracle Cloud Infrastructure.
 
 The application uses SCH to move events coming on the Stream to the Object Storage, where those are persisted for long term duration.
 
