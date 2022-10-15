@@ -143,7 +143,7 @@ public class Worker implements Runnable {
 
     private String getMailBody(final Alert alert) {
         final String body =
-                "For device with serial number %s and username %s, threshold breached for parameter %s, Defined Threshold %s, Observed Value %s";
+                "Dear %s, <br/><br/> An abnormal reading was observed for your device with serial number %s, for parameter %s, <b>Defined Threshold</b> is %s, <b>Observed Value</b> is %s";
         return String.format(
                 body,
                 alert.getDeviceSerialNumber(),

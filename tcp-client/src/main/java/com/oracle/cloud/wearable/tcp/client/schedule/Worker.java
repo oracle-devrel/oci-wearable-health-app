@@ -1,6 +1,7 @@
 package com.oracle.cloud.wearable.tcp.client.schedule;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.springframework.boot.ansi.AnsiOutput;
 
 import com.oracle.cloud.wearable.tcp.client.TcpClientGateway;
 import com.oracle.cloud.wearable.tcp.model.RawRequest;
@@ -33,24 +34,42 @@ public class Worker implements Runnable {
         builder.append(DEFAULT_EVENT_TYPE);
         builder.append(DEFAULT_DELIMITER);
 
+        Integer abnormalParamCount = 0;
+
         if (abnormalReading) {
-            builder.append(RandomUtils.nextInt(40, 60));
+            abnormalParamCount = RandomUtils.nextInt(1, 5);
+        }
+
+        if (abnormalReading && abnormalParamCount > 0) {
+            builder.append(RandomUtils.nextInt(121, 180));
+            abnormalParamCount--;
         } else {
             builder.append(RandomUtils.nextInt(72, 120));
         }
 
         builder.append(DEFAULT_DELIMITER);
 
-        if (abnormalReading) {
-            builder.append(RandomUtils.nextInt(150, 250) + BP_DELIMITER + RandomUtils.nextInt(100, 130));
+        if (abnormalReading && abnormalParamCount > 0) {
+            builder.append(RandomUtils.nextInt(121, 250));
+            abnormalParamCount--;
         } else {
-            builder.append(RandomUtils.nextInt(100, 150) + BP_DELIMITER + RandomUtils.nextInt(50, 90));
+            builder.append(RandomUtils.nextInt(100, 120));
+        }
+
+        builder.append(BP_DELIMITER);
+
+        if (abnormalReading && abnormalParamCount > 0) {
+            builder.append(RandomUtils.nextInt(60, 80));
+            abnormalParamCount--;
+        } else {
+            builder.append(RandomUtils.nextInt(80, 90));
         }
 
         builder.append(DEFAULT_DELIMITER);
 
-        if (abnormalReading) {
-            builder.append(RandomUtils.nextDouble(60, 80));
+        if (abnormalReading && abnormalParamCount > 0) {
+            builder.append(RandomUtils.nextDouble(60, 90));
+            abnormalParamCount--;
         } else {
             builder.append(RandomUtils.nextDouble(90, 100));
         }
