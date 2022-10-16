@@ -6,7 +6,7 @@ shell: bash
 env:
   variables: null
   vaultVariables:
-    AUTH_TOKEN: ocid1.vaultsecret.oc1.iad.amaaaaaa2wppjyqapvzpcfi4sxmfu36uuqb3vv3isbqapu6xrcsveenwtgrq
+    
   exportedVariables:
   - BUILDRUN_HASH
 steps:
