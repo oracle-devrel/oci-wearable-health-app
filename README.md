@@ -98,13 +98,13 @@ The deployment manifest of TCP Server component automatically spins-up a NLB, co
 
 Using [Logging Query Language](https://docs.oracle.com/en-us/iaas/Content/Logging/Reference/query_language_specification.htm), the ingested logs are viewed by creating Custom Dashboards.
 
+![Custom-Dashboard](./images/Custom-Dashboard.png)
+
 ### Developer Tools
 
 [DevOps Service](https://docs.oracle.com/en-us/iaas/Content/devops/using/getting_started.htm) in OCI is an end-to-end, continuous integration and continuous delivery (CI/CD) platform for developers. Use this service to easily build, test, and deploy software and applications on Oracle Cloud.
 
 The application is using features like Build & Deployment pipelines, Triggers, Artifacts and Environments for implementing CI/CD process.
-
-![Custom-Dashboard](./images/Custom-Dashboard.png)
 
 ## Getting Started
 
