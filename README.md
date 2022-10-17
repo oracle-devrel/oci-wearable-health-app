@@ -131,7 +131,7 @@ One can get access to the LA feature by contacting support.
 
 ## URLs
 
-* Nothing at this time
+[Terraforn Repo](https://github.com/oracle-devrel/terraform-oci-wearable-health-app) that can be used to setup the complete solution in your tenancy. 
 
 ## Contributing
 
