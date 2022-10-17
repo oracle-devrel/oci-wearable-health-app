@@ -22,9 +22,9 @@ steps:
   command: |
     cd ${OCI_PRIMARY_SOURCE_DIR}/healtheventanalysis
     mvn clean package
-    oci os object put -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --file ${OCI_PRIMARY_SOURCE_DIR}/healtheventanalysis/target/healtheventanalysis.jar --force
-    oci os object put -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --file ${OCI_PRIMARY_SOURCE_DIR}/healtheventanalysis/src/main/resources/data_schema.json --no-overwrite
-    oci os object put -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --file ${OCI_PRIMARY_SOURCE_DIR}/healtheventanalysis/src/main/resources/health_data.json --no-overwrite
+    oci os object put -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --content-type "application/java-archive" --file ${OCI_PRIMARY_SOURCE_DIR}/healtheventanalysis/target/healtheventanalysis.jar --force
+    oci os object put -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --content-type "application/json" --file ${OCI_PRIMARY_SOURCE_DIR}/healtheventanalysis/src/main/resources/data_schema.json --no-overwrite
+    oci os object put -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --content-type "application/json" --file ${OCI_PRIMARY_SOURCE_DIR}/healtheventanalysis/src/main/resources/health_data.json --no-overwrite
   onFailure:
   - type: Command
     command: |
