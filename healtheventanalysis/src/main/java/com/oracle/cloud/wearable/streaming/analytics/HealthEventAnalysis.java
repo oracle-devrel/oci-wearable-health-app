@@ -27,10 +27,9 @@ public class HealthEventAnalysis {
 		Logger.getLogger("org.apache").setLevel(Level.WARN);
 
 		ResourceBundle rd = ResourceBundle.getBundle("application");
-		String bootstrapServersRd = rd.getString("com.kafkaclientoci.bootstrapServers"); // usually of the form
-//		System.out.println("bootstrapServersRd " + bootstrapServersRd);
-		String streamOrKafkaTopicName = rd.getString("com.kafkaclientoci.streamOrKafkaTopicName");
-		String kafkaStreamPoolId = rd.getString("com.kafkaclientoci.streamPoolId");
+		String bootstrapServersRd = System.getenv("BOOT_STRAP_SERVER");
+		String streamOrKafkaTopicName = System.getenv("STREAM_NAME");
+		String kafkaStreamPoolId = System.getenv("STREAM_POOL_ID");
 		String saslJaasConfig = rd.getString("sasl.jaas.config");
 		String kafkaAuthentication = "plain"; // args[2];
 		System.out.println("kafkaAuthentication " + kafkaAuthentication);
@@ -44,6 +43,7 @@ public class HealthEventAnalysis {
 				jsonPathdataschema = args[1];
 		}
 		SparkConf conf = new SparkConf();
+
 		if (conf.contains("spark.master")) {
 			spark = SparkSession.builder().appName("HealthEventAnalysis")
 					.config("spark.sql.streaming.minBatchesToRetain", "10").config("spark.sql.shuffle.partitions", "1")
@@ -57,7 +57,13 @@ public class HealthEventAnalysis {
 
 		StructType jsonSchemafromCloudEvent = spark.read().json(jsonPath).schema();
 		StructType jsonSchemaforData = spark.read().json(jsonPathdataschema).schema();
-
+		// get environment variables;
+		String QUEUE_OCID = System.getenv("QUEUE_OCID");
+		String DP_CLIENT = System.getenv("DP_CLIENT");
+		System.out.println("QUEUE_OCID" + QUEUE_OCID + "DP_CLIENT" + DP_CLIENT);
+		//adding in the environment for queue
+		Environment._DP_ENDPOINT = DP_CLIENT;
+		Environment._QUEUE_ID = QUEUE_OCID;
 		DataStreamReader dataStreamReader = spark.readStream().format("kafka")
 				.option("kafka.bootstrap.servers", bootstrapServersRd).option("subscribe", streamOrKafkaTopicName)
 				.option("kafka.security.protocol", "SASL_SSL").option("kafka.max.partition.fetch.bytes", 1024 * 1024) // limit
