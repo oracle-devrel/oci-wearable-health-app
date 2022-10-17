@@ -16,7 +16,13 @@
 		<jackson-bom.version>2.10.5.1</jackson-bom.version>
 		<cloud.events.api.version>2.3.0</cloud.events.api.version>
 	</properties>
-
+	<repositories>
+		<repository>
+			<id>librepo</id>
+			<name>librepo</name>
+			<url>file://${project.basedir}/lib</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>com.oracle.oci.sdk</groupId>
@@ -100,8 +106,8 @@
 			<groupId>com.oracle.oci.sdk</groupId>
 			<artifactId>oci-java-sdk-queue</artifactId>
 			<version>2.0.1-preview1-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/oci-java-sdk-queue-2.0.1-preview1-SNAPSHOT.jar</systemPath>
+			<!-- <scope>system</scope>
+			<systemPath>${project.basedir}/lib/oci-java-sdk-queue-2.0.1-preview1-SNAPSHOT.jar</systemPath> -->
 		</dependency>
 
 		<dependency>
@@ -165,7 +171,7 @@
 					<skipAssembly>false</skipAssembly>
 				</configuration>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -190,6 +196,7 @@
 							<shadedPattern>com.shaded.oracle.bmc.</shadedPattern>
 						</relocation>
 					</relocations>
+					
 					<!-- exclude signed Manifests -->
 					<filters>
 						<filter>
