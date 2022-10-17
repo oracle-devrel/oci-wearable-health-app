@@ -6,17 +6,21 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 The API endpoint is configurable with environmental variable `REACT_APP_API_GATEWAY_ENDPOINT`:
 
-- create-react-app will pickup environment variable `REACT_APP_API_GATEWAY_ENDPOINT` and expose to `process.env.REACT_APP_API_GATEWAY_ENDPOINT` in JavaScript. And UI will read this value and create a complete API endpoint URL with template `https://{process.env.REACT_APP_API_GATEWAY_ENDPOINT}/admin-api`
+- ## How to configure API endpoint
+  
+  - The API endpoint template for this UI is `https://{process.env.REACT_APP_API_GATEWAY_ENDPOINT}/admin-api` , the API endpoint can be configured by setting environment variable `REACT_APP_API_GATEWAY_ENDPOINT`.
+    - Example: If the desired API endpoint is `https://oracle.api.com/admin-api`, then need to set `REACT_APP_API_GATEWAY_ENDPOINT` = `oracle.api.com`.
+  - How to configure API endpoint for:
+    - **Development**:
+      - Create a file with name `.env` in the project folder at top level, in the file, set up API endpoint domain name like this: `REACT_APP_API_GATEWAY_ENDPOINT = oracle.api.com`
+    - **Deployment**:
+      - Set environment variable for different OS:
+        - MacOS/Linux: in shell with commands like this `REACT_APP_API_GATEWAY_ENDPOINT = oracle.api.com` or `export REACT_APP_API_GATEWAY_ENDPOINT = oracle.api.com`
+        - Windows: (in cmd.exe) `set "REACT_APP_API_GATEWAY_ENDPOINT=abcdef" && npm start`
+- ## How it works:
+  - create-react-app will pickup environment variable `REACT_APP_API_GATEWAY_ENDPOINT` and expose to `process.env.REACT_APP_API_GATEWAY_ENDPOINT` in JavaScript. And UI will read this value and create a complete API endpoint URL with template `https://{process.env.REACT_APP_API_GATEWAY_ENDPOINT}/admin-api`
   - This value should be just domain name, without schema or any path
-  - Example: `oracle.api.com`. In this case the actual API endpoint UI will hit is `https://oracle.api.com/admin-api`
-- How to configure API endpoint for:
-  - **Development**:
-    - Create a file with name `.env` in the project folder at top level, in the file, set up API endpoint domain name like this: `REACT_APP_API_GATEWAY_ENDPOINT = oracle.api.com`
-  - **Deployment**:
-    - Set environment variable for different OS:
-      - MacOS/Linux: in shell with commands like this `REACT_APP_API_GATEWAY_ENDPOINT = oracle.api.com` or `export REACT_APP_API_GATEWAY_ENDPOINT = oracle.api.com`
-      - Windows: (in cmd.exe) `set "REACT_APP_NOT_SECRET_CODE=abcdef" && npm start`
- - Reference: https://create-react-app.dev/docs/adding-custom-environment-variables/
+- Reference: https://create-react-app.dev/docs/adding-custom-environment-variables/
 
 ## Available Scripts
 
