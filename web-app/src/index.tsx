@@ -7,7 +7,6 @@ import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
-  // Route
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./hooks/useAuth";
@@ -21,10 +20,16 @@ import { ResourceNames } from "./constants";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 const queryClient = new QueryClient();
+const ProtectedAdminDashBoard = () => (
+  <AuthRequiredRoute>
+    <AdminDashBoard />
+  </AuthRequiredRoute>
+);
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Navigate to={ResourceNames.LoginPath} />,
+    errorElement: <Navigate to={ResourceNames.LoginPath} />,
   },
   {
     path: ResourceNames.LoginPath,
@@ -32,11 +37,7 @@ const router = createBrowserRouter([
   },
   {
     path: ResourceNames.DashboardPath,
-    element: (
-      <AuthRequiredRoute>
-        <AdminDashBoard />
-      </AuthRequiredRoute>
-    ),
+    element: <ProtectedAdminDashBoard />,
     children: [
       {
         index: true,
@@ -47,9 +48,16 @@ const router = createBrowserRouter([
         path: ResourceNames.DashboardChildrenPaths.deviceManagement,
         element: <DeviceManagement />,
       },
+      { path: "*", element: <ProtectedAdminDashBoard /> },
     ],
+    errorElement: <ProtectedAdminDashBoard />,
   },
   { path: ResourceNames.SignupPath, element: <SignUp /> },
+  {
+    path: "*",
+    element: <Navigate to={ResourceNames.LoginPath} />,
+    errorElement: <Navigate to={ResourceNames.LoginPath} />,
+  },
 ]);
 
 const root = ReactDOM.createRoot(
