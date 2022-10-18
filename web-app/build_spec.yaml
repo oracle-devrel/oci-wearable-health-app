@@ -34,7 +34,7 @@ steps:
       tar cvf oci-wearable-web-app.tar ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*
       echo ${BUILDRUN_HASH} > version
       oci os object put -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --file version --force
-      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build --overwrite --region ${REGION_NAME}
+      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/ --overwrite --region ${REGION_NAME} --content-type auto
 
     onFailure:
       - type: Command
