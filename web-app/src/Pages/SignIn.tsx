@@ -13,6 +13,10 @@ import { useAuthToken } from "../hooks";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import Copyright from "./../components/Copyright";
 import SnackBar from "./../components/CustomizedBottomCenterSnackbar";
+import Carousel from "../components/Carousel";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+
 const theme = createTheme();
 
 export default function SignIn() {
@@ -40,66 +44,78 @@ export default function SignIn() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
+        <Carousel />
+        <Container component="main" sx={{zIndex:"1100"}} maxWidth="xs">
           <CssBaseline />
-          <Box
+
+          <Card
             sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              zIndex: "250",
+              backgroundColor: "white",
+              borderRadius: "4px",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1 }}
+            <CardContent
+              sx={{
+                zIndex: "180",
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                disabled={isLoggingLoading}
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography zIndex="200" style={{fontSize:"2rem",fontWeight:"500"}} color="primary" component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <Box
+                zIndex="200"
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{ mt: 1 }}
               >
-                {isLoggingLoading ? "Signing in" : "Sign In"}
-              </Button>
-              <Grid container justifyContent={"center"}>
-                <Grid item>
-                  <RouterLink to={"/signup"}>
-                    {"Don't have an account? Sign Up"}
-                  </RouterLink>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  disabled={isLoggingLoading}
+                >
+                  {isLoggingLoading ? "Signing in" : "Sign In"}
+                </Button>
+                <Grid container justifyContent={"center"}>
+                  <Grid item>
+                    <RouterLink to={"/signup"}>
+                      {"Don't have an account? Sign Up"}
+                    </RouterLink>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Box>
-          </Box>
+              </Box>
+            </CardContent>
+          </Card>
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
       </ThemeProvider>
