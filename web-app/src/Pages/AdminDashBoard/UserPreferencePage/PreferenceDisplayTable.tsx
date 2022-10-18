@@ -14,6 +14,7 @@ import { updateUserPref } from "./../../../apis/";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthToken } from "../../../hooks";
 import SnackBar from "./../../../components/CustomizedBottomCenterSnackbar";
+import PreferredAlertChannelSelect from "./../PreferredAlertChannelSelect";
 const PreferenceDisplayTable: React.FC<{
   userPreference: UserPreferencesPayload;
   onUpdateSuccessCallback?: () => void;
@@ -61,13 +62,22 @@ const PreferenceDisplayTable: React.FC<{
                 </TableCell>
                 <TableCell width="50%">
                   {isEditMode ? (
-                    <TextField
-                      required
-                      id={key}
-                      defaultValue={userPreference[key]}
-                      size="small"
-                      name={key}
-                    />
+                    key ===
+                    ("preferedAlertChannel" as keyof UserPreferencesPayload) ? (
+                      <PreferredAlertChannelSelect
+                        fieldName={key}
+                        // label="Preferred alert channel"
+                        defaultValue={userPreference[key] as string}
+                      />
+                    ) : (
+                      <TextField
+                        required
+                        id={key}
+                        defaultValue={userPreference[key]}
+                        size="small"
+                        name={key}
+                      />
+                    )
                   ) : (
                     <Typography height="2.5rem">
                       {userPreference[key]}

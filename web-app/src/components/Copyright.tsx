@@ -7,6 +7,7 @@ function Copyright(props: any) {
       variant="body2"
       color="text.secondary"
       align="center"
+      style={{ position: "fixed", bottom: "1vh", left: "calc(50vw - 80px)" }}
       {...props}
     >
       {"Copyright © "}

@@ -37,16 +37,21 @@ export default function SignUp() {
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              marginTop: "calc(50vh - 300px)",
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
+            <Typography
+              style={{ fontSize: "2rem", fontWeight: "500" }}
+              color="primary"
+              component="h1"
+              variant="h5"
+            >
               Sign up
             </Typography>
             <Box
