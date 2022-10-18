@@ -31,3 +31,4 @@ Temporary Items
 .crt
 .csr
 .pem
+admin-api/schema.sql

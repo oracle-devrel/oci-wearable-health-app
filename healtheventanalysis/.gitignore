@@ -1,0 +1,36 @@
+# Maven noise
+target/
+bin/
+
+dependency-reduced-pom.xml
+
+# Osx noise
+.DS_Store
+profile
+.metadata/
+
+# IntelliJ Idea noise
+.idea
+/.idea/
+*.iws
+*.ipr
+*.iml
+*.releaseBackup
+
+# Eclipse noise
+.settings
+.settings/*
+.project
+.classpath
+maven-eclipse.xml
+.factorypath
+# OCI Build noise
+/input_ocibuild*/
+/output_ocibuild*/
+
+# Other
+.externalToolBuilders
+
+#spark noise
+metastore_db/*
+spark-warehouse/*
