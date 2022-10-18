@@ -34,14 +34,7 @@ steps:
       tar cvf oci-wearable-web-app.tar ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*
       echo ${BUILDRUN_HASH} > version
       oci os object put -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --file version --force
-      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*.html --overwrite --region ${REGION_NAME} --content-type text/html
-      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*.js --overwrite --region ${REGION_NAME} --content-type text/javascript
-      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*.css --overwrite --region ${REGION_NAME} --content-type text/css
-      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*.ico --overwrite --region ${REGION_NAME} --content-type image/x-icon
-      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*.png --overwrite --region ${REGION_NAME} --content-type image/png
-      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*.json --overwrite --region ${REGION_NAME} --content-type application/json
-      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*.txt --overwrite --region ${REGION_NAME} --content-type text/plain
-      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*.map --overwrite --region ${REGION_NAME}
+      oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/ --overwrite --region ${REGION_NAME} --content-type auto
 
     onFailure:
       - type: Command
