@@ -17,7 +17,7 @@ const getChipColor = (status: Device["status"]) => {
   let color: ChipTypeMap["props"]["color"];
   switch (status?.toUpperCase()) {
     case "NEW": {
-      color = "primary";
+      color = "secondary";
       break;
     }
     case "LINKED": {
@@ -25,7 +25,11 @@ const getChipColor = (status: Device["status"]) => {
       break;
     }
     case "IN-ACTIVE": {
-      color = "secondary";
+      color = "default";
+      break;
+    }
+    case "ACTIVE": {
+      color = "primary";
       break;
     }
     default: {
@@ -78,7 +82,7 @@ const DeviceListTable: React.FC<{
                 <TableCell>
                   <Stack direction="row" alignItems="center">
                     <Chip
-                      label={device.status}
+                      label={device.status?.toUpperCase()}
                       color={getChipColor(device.status)}
                     />
                   </Stack>

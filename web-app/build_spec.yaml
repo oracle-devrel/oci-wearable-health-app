@@ -25,16 +25,17 @@ steps:
       echo "BUILDRUN_HASH: " $BUILDRUN_HASH
 
   - type: Command
-    timeoutInSeconds: 600
+    timeoutInSeconds: 1000
     name: "Build the app"
     command: |
       cd ${OCI_PRIMARY_SOURCE_DIR}/web-app
-      npm install
-      npm run build
-      tar cvf oci-wearable-web-app.tar ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/*
+      npm install -g yarn
+      yarn install
+      yarn build
       echo ${BUILDRUN_HASH} > version
       oci os object put -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --file version --force
       oci os object bulk-upload -ns ${NAMESPACE_NAME} -bn ${BUCKET_NAME} --src-dir ${OCI_PRIMARY_SOURCE_DIR}/web-app/build/ --overwrite --region ${REGION_NAME} --content-type auto
+      yarn pack --filename="cloudworld-wearable-demo-app-ui-${BUILDRUN_HASH}.tgz"
 
     onFailure:
       - type: Command
@@ -47,4 +48,4 @@ steps:
 outputArtifacts:
   - name: webapp-build-tar
     type: BINARY
-    location: ${OCI_PRIMARY_SOURCE_DIR}/web-app/oci-wearable-web-app.tar
+    location: ${OCI_PRIMARY_SOURCE_DIR}/web-app/cloudworld-wearable-demo-app-ui-${BUILDRUN_HASH}.tgz

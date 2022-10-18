@@ -4,7 +4,7 @@ export type Device = {
   deviceSerialNumber: string;
   deviceType: string;
   activationDate: string;
-  status: "NEW" | "LINKED" | "IN-ACTIVE";
+  status: "NEW" | "LINKED" | "IN-ACTIVE" | "ACTIVE";
 };
 interface GetDevicesResponse {
   responseId: string;
