@@ -13,7 +13,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<oci-java-sdk-version>2.28.0</oci-java-sdk-version>
 		<bouncycastle-version>1.0.2</bouncycastle-version>
-		<jackson-bom.version>2.10.5.1</jackson-bom.version>
+		<jackson-bom.version>2.13.4.1</jackson-bom.version>
 		<cloud.events.api.version>2.3.0</cloud.events.api.version>
 	</properties>
 	<repositories>
