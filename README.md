@@ -2,8 +2,6 @@
 
 [![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_oci-wearable-demo)](https://sonarcloud.io/dashboard?id=oracle-devrel_oci-wearable-demo)
 
-## THIS REPO IS NOT READY FOR USE YET. PLEASE CHECK BACK SOON!
-
 ## Introduction
 
 The sample application is an IoT use-case, in which an application capturing health parameters running on a wearable device is sending health statistics to a device gateway (backend) hosted on OCI on regular intervals.
@@ -19,6 +17,20 @@ The complete use-case can be split into 3 different parts:
 ![Logical-Block-Diagram](./images/Logical-Block-Diagram.png)
 
 ![Architecture-Diagram](./images/Architecture-Diagram.png)
+
+## Getting Started
+
+Before you deploy this demo application, make sure you have
+
+* Access to the OCI tenancy.
+
+* Have the permissions and quota available to manage the required resources.
+
+* Have got access to the Queue service since it's still in LA.
+
+## URLs
+
+[Terraforn Repo](https://github.com/oracle-devrel/terraform-oci-wearable-health-app) that can be used to setup the complete solution in your tenancy.
 
 ## OCI services used to build this solution
 
@@ -106,16 +118,6 @@ Using [Logging Query Language](https://docs.oracle.com/en-us/iaas/Content/Loggin
 
 The application is using features like Build & Deployment pipelines, Triggers, Artifacts and Environments for implementing CI/CD process.
 
-## Getting Started
-
-Before you deploy this demo application, make sure you have
-
-* Access to the OCI tenancy.
-
-* Have the permissions and quota available to manage the required resources.
-
-* Have got access to the Queue service since it's still in LA.
-
 ### Prerequisites
 
 * Permission to `manage` the following types of resources in your Oracle Cloud Infrastructure tenancy: `vcns`, `OSS`, `Kubernetes cluster`, `API gateway`, `functions`, `Mysql DB`, `NoSqlDB`, `Email Delivery`, `object storage` and `instances`.
@@ -128,10 +130,6 @@ If you don't have the required permissions and quota, contact your tenancy admin
 
 The OCI Queue service being used in the solution is currently in LA and will soon be GA. Please follow the OCI News for the latest updates.
 One can get access to the LA feature by contacting support.
-
-## URLs
-
-[Terraforn Repo](https://github.com/oracle-devrel/terraform-oci-wearable-health-app) that can be used to setup the complete solution in your tenancy. 
 
 ## Contributing
 
