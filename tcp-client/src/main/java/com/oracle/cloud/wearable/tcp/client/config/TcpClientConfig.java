@@ -41,6 +41,15 @@ public class TcpClientConfig {
 	@Value("${tcp.client.poolSize}")
 	private int tcpClientPoolSize;
 
+	@Value("${tcp.client.worker.core.pool.size}")
+	private int tcpClientWorkerCorePoolSize;
+
+	@Value("${tcp.client.worker.max.pool.size}")
+	private int tcpClientWorkerMaxPoolSize;
+
+	@Value("${tcp.client.worker.queue.capacity}")
+	private int tcpClientWorkerQueueCapacity;
+
 	@Bean
 	public DirectChannel tcpClientChannel() {
 		return MessageChannels.direct().get();
@@ -77,16 +86,19 @@ public class TcpClientConfig {
 				tcpServerAddress, tcpServerPort);
 
 		tcpNioClientConnectionFactory.setUsingDirectBuffers(true);
-		tcpNioClientConnectionFactory.setSingleUse(true);
+		tcpNioClientConnectionFactory.setSingleUse(false);
+		tcpNioClientConnectionFactory.setSoKeepAlive(true);
+		tcpNioClientConnectionFactory.setSoTimeout(10000);
+		tcpNioClientConnectionFactory.setSoLinger(3000);
 		return new CachingClientConnectionFactory(tcpNioClientConnectionFactory, tcpClientPoolSize);
 	}
 
 	@Bean
 	public Executor taskExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(5);
-		executor.setMaxPoolSize(10);
-		executor.setQueueCapacity(500);
+		executor.setCorePoolSize(tcpClientWorkerCorePoolSize);
+		executor.setMaxPoolSize(tcpClientWorkerMaxPoolSize);
+		executor.setQueueCapacity(tcpClientWorkerQueueCapacity);
 		executor.setThreadNamePrefix("EventProducerClientPool-");
 		executor.initialize();
 		return executor;

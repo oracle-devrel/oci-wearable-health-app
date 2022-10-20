@@ -6,7 +6,7 @@ import com.oracle.cloud.wearable.notification.model.db.UserAlertNotifications;
 public interface UserAlertNotificationsService<T> {
 
   UserAlertNotifications getLatestNotificationSentToUser(
-      final String username, final String serialNumber);
+      final String username, final String serialNumber, final String alertParameter);
 
   void saveUserAlertNotification(
       final UserAlertNotifications lastAlertNotification, final Alert alert);

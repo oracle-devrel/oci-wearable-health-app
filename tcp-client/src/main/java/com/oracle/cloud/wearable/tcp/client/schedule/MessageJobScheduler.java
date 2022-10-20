@@ -25,12 +25,12 @@ public class MessageJobScheduler {
         this.taskExecutor = taskExecutor;
     }
 
-    @Scheduled(fixedDelay = 2000L)
+    @Scheduled(fixedDelay = 10000L)
     public void sendMessageJob() {
         final Set<String> keys = PlaceHolder.DEVICE_SERIAL_NUMBERS.keySet();
-        Integer counter = 20;
+        Integer counter = 1000;
 
-        if (keys.size() < 20) {
+        if (keys.size() < counter) {
             counter = keys.size();
         }
 

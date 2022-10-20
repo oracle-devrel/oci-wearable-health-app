@@ -39,9 +39,14 @@ public class ApplicationConfig {
     final TcpNioServerConnectionFactory serverConnectionFactory =
         new TcpNioServerConnectionFactory(port);
     serverConnectionFactory.setUsingDirectBuffers(true);
+    serverConnectionFactory.setBacklog(1000);
+    serverConnectionFactory.setSoTimeout(10000);
+    serverConnectionFactory.setSoLinger(3000);
+    serverConnectionFactory.setSoKeepAlive(true);
+    serverConnectionFactory.setLookupHost(false);
+    serverConnectionFactory.setSingleUse(false);
     serverConnectionFactory.setSerializer(codec());
     serverConnectionFactory.setDeserializer(codec());
-
     return serverConnectionFactory;
   }
 

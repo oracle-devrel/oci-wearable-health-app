@@ -108,11 +108,7 @@ public class SaveToNoSqlDB {
 			PutRequest putRequest = new PutRequest().setValue(value).setTableName(tableName);
 
 			PutResult putResult = handle.put(putRequest);
-			if (putResult.getVersion() != null) {
-				System.out.println("Wrote " + value);
-			} else {
-				System.out.println("Put failed");
-			}
+
 
 
 		} catch (Exception e) {
@@ -134,16 +130,12 @@ public class SaveToNoSqlDB {
 
 			for (String str : eventList) {
 
-//				
+			
 				if (isValid(str)) {
 					MapValue value = new MapValue().put("id", UUID.randomUUID().toString()).put("alertjson", str);
 					PutRequest putRequest = new PutRequest().setValue(value).setTableName(health_alert_table_name);
 					PutResult putResult = handle.put(putRequest);
-					if (putResult.getVersion() != null) {
-						System.out.println("Wrote health alert in " + health_alert_table_name + " " + value);
-					} else {
-						System.out.println("Put failed");
-					}
+
 				}
 			}
 
@@ -173,11 +165,7 @@ public class SaveToNoSqlDB {
 							jsonArr.getString(0));
 					PutRequest putRequest = new PutRequest().setValue(value).setTableName(tableName);
 					PutResult putResult = handle.put(putRequest);
-					if (putResult.getVersion() != null) {
-						System.out.println("Wrote " + value);
-					} else {
-						System.out.println("Put failed");
-					}
+
 				}
 			}
 

@@ -27,129 +27,128 @@ import java.util.Map;
 @Scope("prototype")
 public class Worker implements Runnable {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  private static final ObjectMapper MAPPER =
+      new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    private static final EventFormat FORMAT =
-            EventFormatProvider.getInstance().resolveFormat(JsonFormat.CONTENT_TYPE);
+  private static final EventFormat FORMAT =
+      EventFormatProvider.getInstance().resolveFormat(JsonFormat.CONTENT_TYPE);
 
-    private static final String KEY_EVENT_JSON = "jsonstring";
+  private static final String KEY_EVENT_JSON = "jsonstring";
 
-    private static final Integer DEFAULT_FREQUENCY = 15;
+  private static final Integer DEFAULT_FREQUENCY = 15;
 
-    private final String rawMessage;
+  private final String rawMessage;
 
-    @Autowired
-    private UserAlertNotificationsService alertNotificationsService;
+  @Autowired private UserAlertNotificationsService alertNotificationsService;
 
-    @Autowired
-    private UserService userService;
+  @Autowired private UserService userService;
 
-    @Autowired
-    private EmailSender emailSender;
+  @Autowired private EmailSender emailSender;
 
-    public Worker(final String msg) {
-        rawMessage = msg;
+  public Worker(final String msg) {
+    rawMessage = msg;
+  }
+
+  public void run() {
+    if (rawMessage == null || rawMessage.trim().isEmpty()) {
+      log.warn("Incorrect alert event received, its empty, exiting");
+      return;
     }
 
-    public void run() {
-        if (rawMessage == null || rawMessage.trim().isEmpty()) {
-            log.warn("Incorrect alert event received, its empty, exiting");
-            return;
+    log.debug("Raw event received on queue {}", rawMessage);
+
+    try {
+      final Map<String, String> tempHolder = MAPPER.readValue(rawMessage, Map.class);
+
+      final String base64EncodedEvent = tempHolder.get(KEY_EVENT_JSON);
+      if (base64EncodedEvent == null || base64EncodedEvent.trim().isEmpty()) {
+        log.warn("Base64 encoded event is empty, exiting");
+        return;
+      }
+
+      final byte[] decodedEvent = Base64.decodeBase64(base64EncodedEvent);
+      final CloudEvent event = FORMAT.deserialize(decodedEvent);
+
+      if (event != null) {
+        final byte[] payload = event.getData().toBytes();
+        if (payload == null || payload.length == 0) {
+          log.warn("Incorrect alert event received, has no data payload, exiting");
+          return;
+        } else {
+          final String data = new String(payload);
+          log.info("Data in alert event is {}", data);
+          processEvent(data);
         }
-
-        log.debug("Raw event received on queue {}", rawMessage);
-
-        try {
-            final Map<String, String> tempHolder = MAPPER.readValue(rawMessage, Map.class);
-
-            final String base64EncodedEvent = tempHolder.get(KEY_EVENT_JSON);
-            if (base64EncodedEvent == null || base64EncodedEvent.trim().isEmpty()) {
-                log.warn("Base64 encoded event is empty, exiting");
-                return;
-            }
-
-            final byte[] decodedEvent = Base64.decodeBase64(base64EncodedEvent);
-            final CloudEvent event = FORMAT.deserialize(decodedEvent);
-
-            if (event != null) {
-                final byte[] payload = event.getData().toBytes();
-                if (payload == null || payload.length == 0) {
-                    log.warn("Incorrect alert event received, has no data payload, exiting");
-                    return;
-                } else {
-                    final String data = new String(payload);
-                    log.info("Data in alert event is {}", data);
-                    processEvent(data);
-                }
-            }
-        } catch (JsonProcessingException e) {
-            log.error("Exception occurred while converting Json String to Alert object", e);
-            throw new RuntimeException(
-                    "Exception occurred while converting Json String to Alert object", e);
-        } catch (Exception e) {
-            log.error("Exception occurred while processing alert event", e);
-            throw new RuntimeException("Exception occurred while processing alert event", e);
-        }
+      }
+    } catch (JsonProcessingException e) {
+      log.error("Exception occurred while converting Json String to Alert object", e);
+      throw new RuntimeException(
+          "Exception occurred while converting Json String to Alert object", e);
+    } catch (Exception e) {
+      log.error("Exception occurred while processing alert event", e);
+      throw new RuntimeException("Exception occurred while processing alert event", e);
     }
+  }
 
-    private void processEvent(final String payload) throws JsonProcessingException {
-        final Alert alert = MAPPER.readValue(payload, Alert.class);
-        final UserAlertNotifications latestNotificationSentToUser =
-                alertNotificationsService.getLatestNotificationSentToUser(
-                        alert.getUsername(), alert.getDeviceSerialNumber());
+  private void processEvent(final String payload) throws JsonProcessingException {
+    final Alert alert = MAPPER.readValue(payload, Alert.class);
+    final UserAlertNotifications latestNotificationSentToUser =
+        alertNotificationsService.getLatestNotificationSentToUser(
+            alert.getUsername(), alert.getDeviceSerialNumber(), alert.getAlertingParameter());
 
-        if (latestNotificationSentToUser == null
-                || (latestNotificationSentToUser != null
-                && isTimeIntervalOver(
+    if (latestNotificationSentToUser == null
+        || (latestNotificationSentToUser != null
+            && isTimeIntervalOver(
                 latestNotificationSentToUser.getNotificationTime(),
                 alert.getNotificationFrequency()))) {
 
-            final User user = userService.getUserByUsername(alert.getUsername());
-            if (user == null) {
-                throw new RuntimeException(
-                        "User with email " + alert.getUsername() + " not found, throwing exception");
-            }
+      final User user = userService.getUserByUsername(alert.getUsername());
+      if (user == null) {
+        throw new RuntimeException(
+            "User with email " + alert.getUsername() + " not found, throwing exception");
+      }
 
-            String recipient = user.getEmail();
-            if (alert.getEmergencyContactEmail() != null) {
-                recipient = alert.getEmergencyContactEmail();
-            }
-            emailSender.sendEmail(getMailBody(alert), recipient);
+      String recipient = user.getEmail();
+      if (alert.getEmergencyContactEmail() != null) {
+        recipient = alert.getEmergencyContactEmail();
+      }
+      emailSender.sendEmail(getMailBody(alert, user.getFirstName()), recipient);
 
-            if (latestNotificationSentToUser != null) {
-                alertNotificationsService.saveUserAlertNotification(latestNotificationSentToUser, alert);
-            } else {
-                alertNotificationsService.saveUserAlertNotification(alert);
-            }
-        } else {
-            log.info(
-                    "Not sending alert for user {} with device {} as the time interval has not elapsed",
-                    alert.getUsername(),
-                    alert.getDeviceSerialNumber());
-        }
+      if (latestNotificationSentToUser != null) {
+        alertNotificationsService.saveUserAlertNotification(latestNotificationSentToUser, alert);
+      } else {
+        alertNotificationsService.saveUserAlertNotification(alert);
+      }
+    } else {
+      log.info(
+          "Not sending alert for user {} with device {} as the time interval has not elapsed",
+          alert.getUsername(),
+          alert.getDeviceSerialNumber());
+    }
+  }
+
+  private boolean isTimeIntervalOver(final Date notificationTime, Integer frequency) {
+    if (notificationTime == null) {
+      return true;
     }
 
-    private boolean isTimeIntervalOver(final Date notificationTime, Integer frequency) {
-        if (notificationTime == null) {
-            return true;
-        }
-
-        if (frequency == null) {
-            frequency = DEFAULT_FREQUENCY;
-        }
-
-        return notificationTime.getTime() < System.currentTimeMillis() - (frequency * 60 * 1000);
+    if (frequency == null) {
+      frequency = DEFAULT_FREQUENCY;
     }
 
-    private String getMailBody(final Alert alert) {
-        final String body =
-                "Dear %s, <br/><br/> An abnormal reading was observed for your device with serial number %s, for parameter %s, <b>Defined Threshold</b> is %s, <b>Observed Value</b> is %s";
-        return String.format(
-                body,
-                alert.getUsername(),
-                alert.getDeviceSerialNumber(),
-                alert.getAlertingParameter(),
-                alert.getThreshold(),
-                alert.getObservedValue());
-    }
+    return notificationTime.getTime() < System.currentTimeMillis() - (frequency * 60 * 1000);
+  }
+
+  private String getMailBody(final Alert alert, final String name) {
+    final String body =
+        "Dear %s, <br/><br/>An abnormal reading was observed for your device with serial number %s, parameter %s's threshold has breached, <b>Observed Value</b> is %s, <b>Defined Threshold</b> is %s."
+            + "<br/><br/> Regards,<br/>Wearable App Team";
+    return String.format(
+        body,
+        name,
+        alert.getDeviceSerialNumber(),
+        alert.getAlertingParameter(),
+        alert.getObservedValue(),
+        alert.getThreshold());
+  }
 }
