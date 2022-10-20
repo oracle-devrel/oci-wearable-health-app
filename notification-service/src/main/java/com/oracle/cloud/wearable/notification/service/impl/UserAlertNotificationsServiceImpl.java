@@ -20,19 +20,17 @@ import java.util.Optional;
 public class UserAlertNotificationsServiceImpl
     implements UserAlertNotificationsService<UserAlertNotifications> {
 
-  @Autowired
-  private UserAlertNotificationsRepository alertNotificationsRepository;
+  @Autowired private UserAlertNotificationsRepository alertNotificationsRepository;
 
-  @Autowired
-  private DeviceRepository deviceRepository;
+  @Autowired private DeviceRepository deviceRepository;
 
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
   public UserAlertNotifications getLatestNotificationSentToUser(
-      final String username, final String serialNumber) {
+      final String username, final String serialNumber, final String alertParameter) {
     final Optional<UserAlertNotifications> latestNotificationSentToUser =
-        alertNotificationsRepository.getLatestNotificationSentToUser(username, serialNumber);
+        alertNotificationsRepository.getLatestNotificationSentToUser(
+            username, serialNumber, alertParameter);
     if (latestNotificationSentToUser.isPresent()) {
       return latestNotificationSentToUser.get();
     }
