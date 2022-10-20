@@ -125,7 +125,7 @@ public class HealthEventAnalysis {
 
 						System.out.println("number of records for Systolic BP queue alerts " + message_list.size());
 					}
-					QueueProducer.sendHealthMessage(message_list, "Systolic BP thershold breached", SysBP_Thershold);
+					QueueProducer.sendHealthMessage(message_list, "Systolic BP", SysBP_Thershold);
 
 				}).outputMode("complete").trigger(Trigger.ProcessingTime("2 minutes")).start();
 
@@ -139,7 +139,7 @@ public class HealthEventAnalysis {
 
 						System.out.println("number of records for Spo2 level queue alerts " + message_list.size());
 					}
-					QueueProducer.sendHealthMessage(message_list, "Spo2 thershold breached", Spo2_Thershold);
+					QueueProducer.sendHealthMessage(message_list, "Spo2", Spo2_Thershold);
 
 				}).outputMode("complete").trigger(Trigger.ProcessingTime("2 minutes")).start();
 
@@ -153,7 +153,7 @@ public class HealthEventAnalysis {
 
 						System.out.println("number of records for Spo2 queue alerts " + message_list.size());
 					}
-					QueueProducer.sendHealthMessage(message_list, "diastolicBP  thershold breached", DiasBP_Thershold);
+					QueueProducer.sendHealthMessage(message_list, "diastolicBP", DiasBP_Thershold);
 
 				}).outputMode("complete").trigger(Trigger.ProcessingTime("2 minutes")).start();
 		StreamingQuery heartrate_query = spark.sql("select window,deviceSerialNumber,username,avg(heartRate) from "
@@ -166,7 +166,7 @@ public class HealthEventAnalysis {
 
 						System.out.println("number of records for heart rate queue alerts " + message_list.size());
 					}
-					QueueProducer.sendHealthMessage(message_list, "heartrate  thershold breached", heartrate_Thershold);
+					QueueProducer.sendHealthMessage(message_list, "heartrate", heartrate_Thershold);
 
 				}).outputMode("complete").trigger(Trigger.ProcessingTime("2 minutes")).start();
 
