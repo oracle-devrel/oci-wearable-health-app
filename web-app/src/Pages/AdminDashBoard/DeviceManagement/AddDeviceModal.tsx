@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useAuthToken } from "../../../hooks";
 import dayjs from "dayjs";
 import SnackBar from "./../../../components/CustomizedBottomCenterSnackbar";
+import Select, { buildMenuItems } from "./../../../components/SelectDropdown";
 
 const style = {
   position: "absolute" as "absolute",
@@ -76,7 +77,7 @@ const AddDeviceModal: React.FC<{
     const data = new FormData(event.currentTarget);
     mutate({
       username: userName as string,
-      device: { ...getDevicePayload(data), status: "NEW" },
+      device: { ...getDevicePayload(data), status: "ACTIVE" },
     });
   };
   return (
@@ -118,6 +119,24 @@ const AddDeviceModal: React.FC<{
                     InputLabelProps={{
                       shrink: true,
                     }}
+                  />
+                );
+              }
+              if (name === "deviceType") {
+                return (
+                  <Select
+                    key={`${index}${name}`}
+                    fieldName={name}
+                    label={diplayStringMap[name]}
+                    menuItems={buildMenuItems(
+                      [
+                        { text: "Watch", value: "Watch" },
+                        { text: "Fitness Tracker", value: "Fitness Tracker" },
+                        { text: "Body Sensor", value: "Body Sensor" },
+                      ],
+                      "Please choose a device type"
+                    )}
+                    sx={{ width: "100%" }}
                   />
                 );
               }

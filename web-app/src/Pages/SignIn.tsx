@@ -13,9 +13,6 @@ import { useAuthToken } from "../hooks";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import Copyright from "./../components/Copyright";
 import SnackBar from "./../components/CustomizedBottomCenterSnackbar";
-import Carousel from "../components/Carousel";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 
 const theme = createTheme();
 
@@ -44,78 +41,80 @@ export default function SignIn() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Carousel />
-        <Container component="main" sx={{zIndex:"1100"}} maxWidth="xs">
+        <Container
+          component="main"
+          maxWidth="xs"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: "calc(50vh - 300px)",
+          }}
+        >
           <CssBaseline />
-
-          <Card
+          <Box
             sx={{
-              zIndex: "250",
-              backgroundColor: "white",
-              borderRadius: "4px",
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
-            <CardContent
-              sx={{
-                zIndex: "180",
-                marginTop: 8,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography
+              style={{ fontSize: "2rem", fontWeight: "500" }}
+              color="primary"
+              component="h1"
+              variant="h5"
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography zIndex="200" style={{fontSize:"2rem",fontWeight:"500"}} color="primary" component="h1" variant="h5">
-                Sign in
-              </Typography>
-              <Box
-                zIndex="200"
-                component="form"
-                onSubmit={handleSubmit}
-                noValidate
-                sx={{ mt: 1 }}
+              Sign in
+            </Typography>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                disabled={isLoggingLoading}
               >
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  disabled={isLoggingLoading}
-                >
-                  {isLoggingLoading ? "Signing in" : "Sign In"}
-                </Button>
-                <Grid container justifyContent={"center"}>
-                  <Grid item>
-                    <RouterLink to={"/signup"}>
-                      {"Don't have an account? Sign Up"}
-                    </RouterLink>
-                  </Grid>
+                {isLoggingLoading ? "Signing in" : "Sign In"}
+              </Button>
+              <Grid container justifyContent={"center"}>
+                <Grid item>
+                  <RouterLink to={"/signup"}>
+                    {"Don't have an account? Sign Up"}
+                  </RouterLink>
                 </Grid>
-              </Box>
-            </CardContent>
-          </Card>
+              </Grid>
+            </Box>
+          </Box>
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
       </ThemeProvider>
