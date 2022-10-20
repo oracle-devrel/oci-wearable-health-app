@@ -14,7 +14,7 @@ public interface UserAlertNotificationsRepository
   @Query(
       nativeQuery = true,
       value =
-          "SELECT uan.* FROM user_alert_notifications uan, device d, user u WHERE u.username=:username and d.serial_number=:deviceSerialNumber and u.id = d.user_id and uan.user_id = u.id and uan.device_id = d.id ORDER BY notification_time DESC LIMIT 1")
+          "SELECT uan.* FROM user_alert_notifications uan, device d, user u WHERE u.username=:username and d.serial_number=:deviceSerialNumber and u.id = d.user_id and uan.user_id = u.id and uan.device_id = d.id and uan.alert_parameter=:alertParameter ORDER BY notification_time DESC LIMIT 1")
   Optional<UserAlertNotifications> getLatestNotificationSentToUser(
-      final String username, final String deviceSerialNumber);
+      final String username, final String deviceSerialNumber, final String alertParameter);
 }
