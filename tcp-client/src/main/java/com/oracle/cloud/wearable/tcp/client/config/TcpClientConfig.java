@@ -77,7 +77,10 @@ public class TcpClientConfig {
 				tcpServerAddress, tcpServerPort);
 
 		tcpNioClientConnectionFactory.setUsingDirectBuffers(true);
-		tcpNioClientConnectionFactory.setSingleUse(true);
+		tcpNioClientConnectionFactory.setSingleUse(false);
+		tcpNioClientConnectionFactory.setSoKeepAlive(true);
+		tcpNioClientConnectionFactory.setSoTimeout(10000);
+		tcpNioClientConnectionFactory.setSoLinger(3000);
 		return new CachingClientConnectionFactory(tcpNioClientConnectionFactory, tcpClientPoolSize);
 	}
 

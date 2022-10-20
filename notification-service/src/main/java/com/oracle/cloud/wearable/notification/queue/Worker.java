@@ -114,7 +114,7 @@ public class Worker implements Runnable {
             if (alert.getEmergencyContactEmail() != null) {
                 recipient = alert.getEmergencyContactEmail();
             }
-            emailSender.sendEmail(getMailBody(alert), recipient);
+            emailSender.sendEmail(getMailBody(alert, user.getFirstName()), recipient);
 
             if (latestNotificationSentToUser != null) {
                 alertNotificationsService.saveUserAlertNotification(latestNotificationSentToUser, alert);
@@ -141,15 +141,15 @@ public class Worker implements Runnable {
         return notificationTime.getTime() < System.currentTimeMillis() - (frequency * 60 * 1000);
     }
 
-    private String getMailBody(final Alert alert) {
+    private String getMailBody(final Alert alert, final String name) {
         final String body =
-                "Dear %s, <br/><br/> An abnormal reading was observed for your device with serial number %s, for parameter %s, <b>Defined Threshold</b> is %s, <b>Observed Value</b> is %s";
+                "Dear %s, <br/><br/>An abnormal reading was observed for your device with serial number %s, for parameter %s threshold has breached, <b>Observed Value</b> is %s. " +
+                        "<br/><br/> Regards,<br/>Wearable App Team";
         return String.format(
                 body,
-                alert.getUsername(),
+                name,
                 alert.getDeviceSerialNumber(),
                 alert.getAlertingParameter(),
-                alert.getThreshold(),
                 alert.getObservedValue());
     }
 }
