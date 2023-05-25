@@ -5,6 +5,7 @@ import { Typography, Grid } from "@mui/material";
 import { useAuthToken } from "../../hooks";
 import { Box } from "@mui/system";
 import WatchIcon from "@mui/icons-material/Watch";
+import { AuthType } from "../../models";
 const PageTitle = ({ content }: { content: string }) => (
   <Typography
     align="center"
@@ -65,4 +66,9 @@ export const useDashBoardWelcomeContent = () => {
       />
     </Box>
   ) : null;
+};
+
+export const loginSuccessSnackBarTextMapping: { [key in AuthType]: string } = {
+  appbased: "Logged in successfully!",
+  okta: "Logged in successfully with Okta!",
 };

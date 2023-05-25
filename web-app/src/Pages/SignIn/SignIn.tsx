@@ -1,6 +1,5 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
@@ -9,27 +8,38 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useAuthToken } from "../hooks";
+import { useAuthToken } from "../../hooks";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
-import Copyright from "./../components/Copyright";
-import SnackBar from "./../components/CustomizedBottomCenterSnackbar";
-
+import Copyright from "../../components/Copyright";
+import SnackBar from "../../components/CustomizedBottomCenterSnackbar";
+import { AuthType } from "../../models";
+import { SignInButton } from "./SignInButton";
 const theme = createTheme();
-
 export default function SignIn() {
-  const { handleLogin, authToken, isLoggingLoading, logginError } =
-    useAuthToken();
+  const {
+    handleLogin,
+    authToken,
+    isLoggingLoading,
+    logginError,
+    apiGatewayToken,
+    authType,
+  } = useAuthToken();
   const [loginSubmitted, setLoginSubmitted] = React.useState(false);
   const navigate = useNavigate();
+  /**
+   * Navigate to dashboard page when authorized.
+   */
   React.useEffect(() => {
-    if (loginSubmitted && !!authToken) {
+    const isAuthorizedByAuthType: { [key in AuthType]: boolean } = {
+      okta: !!authToken && !!apiGatewayToken,
+      appbased: loginSubmitted && !!authToken,
+    };
+    isAuthorizedByAuthType[authType] &&
       navigate("/dashboard", { state: { loginSuccess: true } });
-    }
-  }, [authToken, navigate, loginSubmitted]);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    handleLogin({
+  }, [authToken, navigate, loginSubmitted, apiGatewayToken, authType]);
+  const handleSubmit = (authType: AuthType) => {
+    const data = new FormData(logInFormRef?.current);
+    handleLogin(authType, {
       username: data.get("email") as string,
       pass: data.get("password") as string,
       callback: () => {
@@ -38,6 +48,7 @@ export default function SignIn() {
     });
   };
 
+  const logInFormRef = React.useRef<HTMLFormElement>();
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -71,12 +82,7 @@ export default function SignIn() {
             >
               Sign in
             </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" noValidate sx={{ mt: 1 }} ref={logInFormRef}>
               <TextField
                 margin="normal"
                 required
@@ -97,15 +103,15 @@ export default function SignIn() {
                 id="password"
                 autoComplete="current-password"
               />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                disabled={isLoggingLoading}
-              >
-                {isLoggingLoading ? "Signing in" : "Sign In"}
-              </Button>
+              <SignInButton
+                onClick={() => {
+                  handleSubmit("appbased");
+                }}
+                assignedAuthType={"appbased"}
+                currentAuthType={authType}
+                isLoading={isLoggingLoading}
+              />
+
               <Grid container justifyContent={"center"}>
                 <Grid item>
                   <RouterLink to={"/signup"}>
@@ -113,6 +119,14 @@ export default function SignIn() {
                   </RouterLink>
                 </Grid>
               </Grid>
+              <SignInButton
+                onClick={() => {
+                  handleSubmit("okta");
+                }}
+                assignedAuthType={"okta"}
+                currentAuthType={authType}
+                isLoading={isLoggingLoading}
+              />
             </Box>
           </Box>
           <Copyright sx={{ mt: 8, mb: 4 }} />
