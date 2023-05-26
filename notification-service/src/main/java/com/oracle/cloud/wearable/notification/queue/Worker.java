@@ -141,8 +141,10 @@ public class Worker implements Runnable {
 
   private String getMailBody(final Alert alert, final String name) {
     final String body =
-        "Dear %s, <br/><br/>An abnormal reading was observed for your device with serial number %s, parameter %s's threshold has breached, <b>Observed Value</b> is %s, <b>Defined Threshold</b> is %s."
-            + "<br/><br/> Regards,<br/>Wearable App Team";
+        "<html><head></head><body><p>Dear %s, <br/><br/>An abnormal reading was observed for your device with serial number %s, parameter %s's threshold has breached, <b>Observed Value</b> is %s, <b>Defined Threshold</b> is %s."
+            + "<br/><br/> Regards,<br/>Wearable App Team<br/>"
+            + "<a href=https://www.oracle.com>Oracle.com</a></p>"
+            + "</body></html>";
     return String.format(
         body,
         name,
