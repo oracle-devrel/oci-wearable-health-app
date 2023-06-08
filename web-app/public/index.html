@@ -27,6 +27,12 @@
     <title>%REACT_APP_WEBSITE_NAME%</title>
   </head>
   <body>
+    <!-- script that passes okta auth tokens back to parent window (for okta openid oauth flow) -->
+    <script>
+      if (!!window.opener) {
+        window.opener.postMessage(location.search, "*");
+      }
+    </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import SignInSide from "./Pages/SignIn";
+import SignInSide from "./Pages/SignIn/SignIn";
 import reportWebVitals from "./reportWebVitals";
 import {
   createBrowserRouter,
@@ -11,7 +11,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./hooks/useAuth";
 import AdminDashBoard from "./Pages/AdminDashBoard/AdminDashboard";
-import SignUp from "./Pages/SignUp";
+import SignUp from "./Pages/SignUp/SignUp";
 import { UserPreferencePage } from "./Pages/AdminDashBoard/UserPreferencePage/UserPreferencePage";
 import { AuthRequiredRoute } from "./components/AuthRequiredRoute";
 import DeviceManagement from "./Pages/AdminDashBoard/DeviceManagement/DeviceManagementPage";
@@ -26,15 +26,7 @@ const ProtectedAdminDashBoard = () => (
   </AuthRequiredRoute>
 );
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Navigate to={ResourceNames.LoginPath} />,
-    errorElement: <Navigate to={ResourceNames.LoginPath} />,
-  },
-  {
-    path: ResourceNames.LoginPath,
-    element: <SignInSide />,
-  },
+  { path: ResourceNames.LoginPath, element: <SignInSide />, index: true },
   {
     path: ResourceNames.DashboardPath,
     element: <ProtectedAdminDashBoard />,

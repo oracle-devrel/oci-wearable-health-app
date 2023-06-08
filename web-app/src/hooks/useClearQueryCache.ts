@@ -6,6 +6,5 @@ export const useClearQueryCache = () => {
   const queryClient = useQueryClient();
   React.useEffect(() => {
     return () => queryClient.clear();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [queryClient]);
 };

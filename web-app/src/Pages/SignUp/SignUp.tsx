@@ -9,17 +9,30 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link as RouterLink } from "react-router-dom";
-import { signup, newUserFieldNames, NewUser } from "./../apis";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { signup, newUserFieldNames, NewUser } from "../../apis";
 import { useMutation } from "@tanstack/react-query";
-import Copyright from "./../components/Copyright";
-import SnackBar from "./../components/CustomizedBottomCenterSnackbar";
+import Copyright from "../../components/Copyright";
+import SnackBar from "../../components/CustomizedBottomCenterSnackbar";
+import { ResourceNames } from "../../constants";
 
 const theme = createTheme();
 
-export default function SignUp() {
-  const { mutate, isLoading, isSuccess, data, isError, error } =
-    useMutation(signup);
+export const SignUp: React.FC = () => {
+  const navigate = useNavigate();
+
+  const { mutate, isLoading, isSuccess, data, isError, error } = useMutation(
+    signup,
+    {
+      onSuccess: () => {
+        setTimeout(() => {
+          navigate(`/${ResourceNames.LoginPath}`, {
+            state: { signupState: "successful" },
+          });
+        }, 5000);
+      },
+    }
+  );
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -110,7 +123,7 @@ export default function SignUp() {
                 </Grid>
               </Grid>
               <Button
-                disabled={isLoading}
+                disabled={isLoading || isSuccess}
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -139,10 +152,10 @@ export default function SignUp() {
       {isSuccess && !data?.data?.response?.errorMessage && (
         <SnackBar
           severity="success"
-          msg="Signed up successfully! Now you can click on link below to start
-      logging in!"
+          msg="Signed up successfully! Will automatically redirect you to log in page in 5s.."
         />
       )}
     </>
   );
-}
+};
+export default SignUp;

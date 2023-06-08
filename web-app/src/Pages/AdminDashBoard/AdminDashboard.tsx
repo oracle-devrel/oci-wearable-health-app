@@ -18,11 +18,13 @@ import { LogOutIconButton } from "./../../components/LogOutIconButton";
 import { MainListItems } from "./SideNavListItems";
 import { Outlet, useLocation } from "react-router-dom";
 import {
+  loginSuccessSnackBarTextMapping,
   useDashBoardWelcomeContent,
   usePageTitle,
 } from "./AdminDashBoardUtils";
 import Copyright from "./../../components/Copyright";
 import SnackBar from "./../../components/CustomizedBottomCenterSnackbar";
+import { AuthContext } from "../../hooks";
 const drawerWidth: number = 240;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -77,17 +79,20 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const { state } = useLocation();
-  console.log(state);
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
   const currentPageTitle = usePageTitle();
   const welcomeContent = useDashBoardWelcomeContent();
+  const { authType } = React.useContext(AuthContext);
   return (
     <>
       {state?.loginSuccess && (
-        <SnackBar msg="Logged in successfully!" severity="success" />
+        <SnackBar
+          msg={loginSuccessSnackBarTextMapping[authType]}
+          severity="success"
+        />
       )}
       <ThemeProvider theme={mdTheme}>
         <Box sx={{ display: "flex" }}>
