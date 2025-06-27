@@ -26,7 +26,7 @@
         <oci.email.java.sdk.version>2.44.0</oci.email.java.sdk.version>
         <jib.maven.plugin.version>3.3.0</jib.maven.plugin.version>
         <apache.common.langs.version>3.12.0</apache.common.langs.version>
-        <jackson.version>2.13.4</jackson.version>
+        <jackson.version>2.15.0</jackson.version>
         <cloud.events.api.version>2.4.0</cloud.events.api.version>
         <javax.mail.version>1.4.7</javax.mail.version>
     </properties>
